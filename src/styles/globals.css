@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #ffffff;
+  --background-start: #191b20;
+  --background-end: #1d2027;
+}
+
+body {
+  color: var(--foreground);
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--background-end)
+    )
+    var(--background-start);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}
