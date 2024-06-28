@@ -162,6 +162,9 @@ export default function Home() {
     }, [fetchAllTokensInfo, isChainValid, walletProvider, userAddress, routerAddress]);
 
     useEffect(() => {
+        setFromTokenAmount('');
+        setToTokenAmount('');
+        setRoute(null);
         if (!fromTokenAddress) return;
         setToTokenAddress(toTokenAddress => toTokenAddress === fromTokenAddress ?
             undefined :
@@ -169,6 +172,9 @@ export default function Home() {
         );
     }, [fromTokenAddress]);
     useEffect(() => {
+        setFromTokenAmount('');
+        setToTokenAmount('');
+        setRoute(null);
         if (!toTokenAddress) return;
         setFromTokenAddress(fromTokenAddress => fromTokenAddress === toTokenAddress ?
             undefined :
@@ -255,7 +261,7 @@ export default function Home() {
     }, [walletProvider, chainId, userAddress, routerAddress, fromTokenAddress]);
 
     const swap = useCallback(() => {
-        if (!route || !walletProvider) return;
+        if (!route || !walletProvider || !userAddress) return;
         setIsSwapping(true);
 
         const ethersProvider = new ethers.providers.Web3Provider(walletProvider, chainId);
@@ -263,7 +269,7 @@ export default function Home() {
 
         const router = new Router();
 
-        router.generateMulticallData(route, signer)
+        router.generateMulticallData(route, userAddress)
             .then(data => router.executeMulticall(
                 chainId as Chain,
                 data,
@@ -275,7 +281,7 @@ export default function Home() {
             })))
             .catch(e => console.error(e))
             .finally(() => setIsSwapping(false));
-    }, [route, walletProvider, chainId, fetchAllTokensInfo]);
+    }, [route, walletProvider, userAddress, chainId, fetchAllTokensInfo]);
 
     return (
         <div className="flex flex-1 self-stretch items-center justify-center">
