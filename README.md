@@ -15,4 +15,4 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000/v1-sdk-frontend-example](http://localhost:3000/v1-sdk-frontend-example) with your browser to see the result.

@@ -53,7 +53,7 @@ export default function Home() {
     );
 
     const routerAddress = useMemo(
-        () => chainId ? chainInfo[chainId]?.routerAddress : undefined,
+        () => chainId ? chainInfo[chainId]?.router3Address : undefined,
         [chainId]
     );
 
@@ -269,18 +269,19 @@ export default function Home() {
 
         const router = new Router();
 
-        router.generateMulticallData(route, userAddress)
-            .then(data => router.executeMulticall(
-                chainId as Chain,
-                data,
-                signer,
-                route.tokenIn.isNative ? route.tokenIn.balanceBN : undefined
-            ).then((tx) => tx.wait().then(() => {
-                fetchAllTokensInfo(); // simple example: just refetch everything
-                alert('Swapped successfully!');
-            })))
-            .catch(e => console.error(e))
-            .finally(() => setIsSwapping(false));
+        const data = router.generateMultiSwapDataV3(route, userAddress);
+
+        router.executeMultiSwapV3(
+            chainId as Chain,
+            data,
+            signer,
+            route.tokenIn.isNative ? route.tokenIn.balanceBN : undefined
+        ).then((tx) => tx.wait().then(() => {
+            fetchAllTokensInfo(); // simple example: just refetch everything
+            alert('Swapped successfully!');
+        }))
+        .catch(e => console.error(e))
+        .finally(() => setIsSwapping(false));
     }, [route, walletProvider, userAddress, chainId, fetchAllTokensInfo]);
 
     return (
